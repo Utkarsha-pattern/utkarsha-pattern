@@ -20,7 +20,7 @@
 
 <table>
 <tr>
-<td valign="top"><img src="./utkarsha-ascii.svg?v=2" width="420" alt="Utkarsha Gupta, ASCII portrait" /></td>
+<td valign="top"><img src="./utkarsha-ascii.svg?v=3" width="420" alt="Utkarsha Gupta, ASCII portrait" /></td>
 <td valign="top"><img src="./stats.svg" width="420" alt="Utkarsha Gupta's GitHub streak and contribution stats, refreshed daily" /></td>
 </tr>
 </table>
