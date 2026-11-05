@@ -30,11 +30,10 @@
 
 <h3><code>utkarsha@github ~ $ ./links.sh</code></h3>
 
-<p><b>Utkarsha Gupta</b> · Product (Pattern / Predict)</p>
-
-<!-- Only a verified GitHub profile link. Add LinkedIn here once a public URL is confirmed. -->
+<p>Utkarsha Gupta · AI &amp; Product @Pattern</p>
 
 [![GitHub](https://img.shields.io/badge/GitHub-Utkarsha--pattern-0d1117?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Utkarsha-pattern)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-utkarshagupta09-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://in.linkedin.com/in/utkarshagupta09)
 
 <br>
 
