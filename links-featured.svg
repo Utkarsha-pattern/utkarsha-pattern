@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="860" height="400" viewBox="0 0 860 400" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace">
+<style>
+  .in { opacity: 0; animation: rise 0.45s ease-out both; }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @media (prefers-reduced-motion: reduce) {
+    .in { opacity: 1 !important; transform: none !important; animation: none !important; }
+  }
+</style>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#111722"/>
+    <stop offset="1" stop-color="#0d1117"/>
+  </linearGradient>
+  <clipPath id="row0"><rect x="28" y="214" height="32" width="0"><animate attributeName="width" from="0" to="804" begin="0.70s" dur="0.55s" fill="freeze"/></rect></clipPath>
+  <clipPath id="row1"><rect x="28" y="250" height="32" width="0"><animate attributeName="width" from="0" to="804" begin="0.95s" dur="0.55s" fill="freeze"/></rect></clipPath>
+  <clipPath id="row2"><rect x="28" y="286" height="32" width="0"><animate attributeName="width" from="0" to="804" begin="1.20s" dur="0.55s" fill="freeze"/></rect></clipPath>
+  <clipPath id="row3"><rect x="28" y="322" height="32" width="0"><animate attributeName="width" from="0" to="804" begin="1.45s" dur="0.55s" fill="freeze"/></rect></clipPath>
+</defs>
+<rect width="860" height="400" rx="12" fill="url(#bg)"/>
+<rect x="0.5" y="0.5" width="859" height="399" rx="12" fill="none" stroke="#30363d"/>
+<line x1="0" y1="32" x2="860" y2="32" stroke="#30363d"/>
+<circle cx="20" cy="16" r="5" fill="#ff5f56"/>
+<circle cx="36" cy="16" r="5" fill="#ffbd2e"/>
+<circle cx="52" cy="16" r="5" fill="#27c93f"/>
+<text x="430" y="21" fill="#7d8590" font-size="12" text-anchor="middle">utkarsha@github: ~$ ./links.sh</text>
+
+<g class="in" style="animation-delay:0.05s">
+  <text x="32" y="72" fill="#e6edf3" font-size="20" font-weight="650">Utkarsha Gupta &#183; AI &amp; Product @Pattern</text>
+</g>
+<g class="in" style="animation-delay:0.22s">
+  <text x="32" y="104" fill="#8b949e" font-size="15">Building AI-powered product experiences @Pattern.</text>
+</g>
+<g class="in" style="animation-delay:0.40s">
+  <rect x="32" y="122" width="200" height="30" rx="8" fill="#161b22" stroke="#30363d"/>
+  <text x="48" y="142" fill="#e6edf3" font-size="14">Stack &#183; Product &#183; AI</text>
+</g>
+
+<g class="in" style="animation-delay:0.58s">
+  <line x1="32" y1="174" x2="828" y2="174" stroke="#30363d"/>
+  <text x="32" y="202" fill="#7d8590" font-size="13">utkarsha@github ~ $ cat featured.md</text>
+</g>
+
+<g clip-path="url(#row0)">
+  <text x="32" y="238" fill="#3fb950" font-size="15" font-weight="650">RunQC</text>
+  <text x="184" y="238" fill="#c9d1d9" font-size="15">&#8212; PDP quality control across Walmart, Target, Macy&#8217;s, eBay &amp; Amazon</text>
+</g>
+<rect y="224" width="8" height="16" fill="#e6edf3" opacity="0">
+  <animate attributeName="x" from="32" to="820" begin="0.70s" dur="0.55s" fill="freeze"/>
+  <set attributeName="opacity" to="0.85" begin="0.70s"/>
+  <set attributeName="opacity" to="0" begin="1.25s"/>
+</rect>
+
+<g clip-path="url(#row1)">
+  <text x="32" y="274" fill="#3fb950" font-size="15" font-weight="650">Validator-AI</text>
+  <text x="184" y="274" fill="#c9d1d9" font-size="15">&#8212; marketplace masterfile checks &amp; in-place fixes before upload</text>
+</g>
+<rect y="260" width="8" height="16" fill="#e6edf3" opacity="0">
+  <animate attributeName="x" from="32" to="820" begin="0.95s" dur="0.55s" fill="freeze"/>
+  <set attributeName="opacity" to="0.85" begin="0.95s"/>
+  <set attributeName="opacity" to="0" begin="1.50s"/>
+</rect>
+
+<g clip-path="url(#row2)">
+  <text x="32" y="310" fill="#3fb950" font-size="15" font-weight="650">Predict-Destiny</text>
+  <text x="184" y="310" fill="#c9d1d9" font-size="15">&#8212; Destiny 2.0 / Predict-UT Slack bot</text>
+</g>
+<rect y="296" width="8" height="16" fill="#e6edf3" opacity="0">
+  <animate attributeName="x" from="32" to="820" begin="1.20s" dur="0.55s" fill="freeze"/>
+  <set attributeName="opacity" to="0.85" begin="1.20s"/>
+  <set attributeName="opacity" to="0" begin="1.75s"/>
+</rect>
+
+<g clip-path="url(#row3)">
+  <text x="32" y="346" fill="#3fb950" font-size="15" font-weight="650">WCentral</text>
+  <text x="184" y="346" fill="#c9d1d9" font-size="15">&#8212; Walmart US leadership dashboard (sales, ads, brand health)</text>
+</g>
+<rect y="332" width="8" height="16" fill="#e6edf3" opacity="0">
+  <animate attributeName="x" from="32" to="820" begin="1.45s" dur="0.55s" fill="freeze"/>
+  <set attributeName="opacity" to="0.85" begin="1.45s"/>
+  <set attributeName="opacity" to="0" begin="2.00s"/>
+</rect>
+</svg>

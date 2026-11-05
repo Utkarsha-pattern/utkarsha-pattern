@@ -30,11 +30,7 @@
 
 <h3><code>utkarsha@github ~ $ ./links.sh</code></h3>
 
-Utkarsha Gupta · AI &amp; Product @Pattern
-<br>
-Building AI-powered product experiences @Pattern.
-<br>
-<code>Stack · Product · AI</code>
+<img src="./links-featured.svg?v=1" width="860" alt="Utkarsha Gupta, AI and Product at Pattern, and featured work" />
 
 <br>
 
@@ -42,28 +38,6 @@ Building AI-powered product experiences @Pattern.
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-utkarshagupta09-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://in.linkedin.com/in/utkarshagupta09)
 
 <br>
-<br>
-
-<h3><code>utkarsha@github ~ $ cat featured.md</code></h3>
-
-<table>
-<tr>
-<td align="right"><b>RunQC</b></td>
-<td align="left">PDP quality control across Walmart, Target, Macy’s, eBay &amp; Amazon</td>
-</tr>
-<tr>
-<td align="right"><b>Validator-AI</b></td>
-<td align="left">marketplace masterfile checks &amp; in-place fixes before upload</td>
-</tr>
-<tr>
-<td align="right"><b>Predict-Destiny</b></td>
-<td align="left">Destiny 2.0 / Predict-UT Slack bot</td>
-</tr>
-<tr>
-<td align="right"><b>WCentral</b></td>
-<td align="left">Walmart US leadership dashboard (sales, ads, brand health)</td>
-</tr>
-</table>
 
 <!--
 Portrait regeneration (after dropping a clearer headshot in as source-photo.png):
