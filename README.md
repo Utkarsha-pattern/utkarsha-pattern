@@ -30,25 +30,12 @@
 
 <h3><code>utkarsha@github ~ $ ./links.sh</code></h3>
 
-<p>Utkarsha Gupta · AI &amp; Product @Pattern</p>
-
-<p>Building AI-powered product experiences @Pattern.</p>
-
-<p><code>Stack&nbsp;&nbsp;Product · AI</code></p>
-
-[![GitHub](https://img.shields.io/badge/GitHub-Utkarsha--pattern-0d1117?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Utkarsha-pattern)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-utkarshagupta09-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://in.linkedin.com/in/utkarshagupta09)
+<img src="./links-featured.svg?v=1" width="860" alt="Utkarsha Gupta, AI and Product at Pattern, and featured work" />
 
 <br>
 
-<h3><code>utkarsha@github ~ $ cat featured.md</code></h3>
-
-<p>
-<b>RunQC</b> — PDP quality control across Walmart, Target, Macy’s, eBay &amp; Amazon<br>
-<b>Validator-AI</b> — marketplace masterfile checks &amp; in-place fixes before upload<br>
-<b>Predict-Destiny</b> — Destiny 2.0 / Predict-UT Slack bot<br>
-<b>WCentral</b> — Walmart US leadership dashboard (sales, ads, brand health)
-</p>
+[![GitHub](https://img.shields.io/badge/GitHub-Utkarsha--pattern-0d1117?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Utkarsha-pattern)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-utkarshagupta09-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://in.linkedin.com/in/utkarshagupta09)
 
 <br>
 
