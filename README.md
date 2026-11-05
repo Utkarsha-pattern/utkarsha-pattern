@@ -30,27 +30,40 @@
 
 <h3><code>utkarsha@github ~ $ ./links.sh</code></h3>
 
-<p>Utkarsha Gupta · AI &amp; Product @Pattern</p>
+Utkarsha Gupta · AI &amp; Product @Pattern
+<br>
+Building AI-powered product experiences @Pattern.
+<br>
+<code>Stack · Product · AI</code>
 
-<p>Building AI-powered product experiences @Pattern.</p>
-
-<p><code>Stack&nbsp;&nbsp;Product · AI</code></p>
+<br>
 
 [![GitHub](https://img.shields.io/badge/GitHub-Utkarsha--pattern-0d1117?style=for-the-badge&logo=github&logoColor=white)](https://github.com/Utkarsha-pattern)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-utkarshagupta09-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://in.linkedin.com/in/utkarshagupta09)
 
 <br>
+<br>
 
 <h3><code>utkarsha@github ~ $ cat featured.md</code></h3>
 
-<p>
-<b>RunQC</b> — PDP quality control across Walmart, Target, Macy’s, eBay &amp; Amazon<br>
-<b>Validator-AI</b> — marketplace masterfile checks &amp; in-place fixes before upload<br>
-<b>Predict-Destiny</b> — Destiny 2.0 / Predict-UT Slack bot<br>
-<b>WCentral</b> — Walmart US leadership dashboard (sales, ads, brand health)
-</p>
-
-<br>
+<table>
+<tr>
+<td align="right"><b>RunQC</b></td>
+<td align="left">PDP quality control across Walmart, Target, Macy’s, eBay &amp; Amazon</td>
+</tr>
+<tr>
+<td align="right"><b>Validator-AI</b></td>
+<td align="left">marketplace masterfile checks &amp; in-place fixes before upload</td>
+</tr>
+<tr>
+<td align="right"><b>Predict-Destiny</b></td>
+<td align="left">Destiny 2.0 / Predict-UT Slack bot</td>
+</tr>
+<tr>
+<td align="right"><b>WCentral</b></td>
+<td align="left">Walmart US leadership dashboard (sales, ads, brand health)</td>
+</tr>
+</table>
 
 <!--
 Portrait regeneration (after dropping a clearer headshot in as source-photo.png):
