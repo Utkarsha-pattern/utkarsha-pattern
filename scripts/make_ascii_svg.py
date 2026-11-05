@@ -59,8 +59,8 @@ TITLE_TEXT = "#7d8590"
 INK = "#c9d1d9"      # chrome / status text, not the portrait fill
 CURSOR = "#c9d1d9"
 # muted portrait ink: keep chroma low and lightness in a band that reads on #0d1117
-CHROMA_KEEP = 0.42
-SAT_CAP = 0.30
+CHROMA_KEEP = 0.72
+SAT_CAP = 0.52
 LIGHT_MIN = 0.56
 LIGHT_MAX = 0.82
 QUANT = 8            # channel step; merges neighboring glyphs into color runs
