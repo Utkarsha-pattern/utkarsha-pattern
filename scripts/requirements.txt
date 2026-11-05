@@ -1,0 +1,6 @@
+requests==2.32.3
+beautifulsoup4==4.12.3
+Pillow==12.1.1
+numpy==1.26.4
+# Portrait only — not required by the daily workflow:
+#   pip install opencv-python-headless rembg
