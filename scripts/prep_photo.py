@@ -29,7 +29,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 INP = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "source-photo.png")
 OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(HERE, "..", "source-prepped.png")
 
-LINE_WEIGHT = 0.35    # how hard edges are pushed toward black
+LINE_WEIGHT = 0.55    # how hard edges (eyes, beard, collar) are pushed toward black
 
 # 1. cut out the subject
 cut = remove(Image.open(INP).convert("RGBA"))
@@ -38,10 +38,9 @@ alpha = np.array(cut.split()[-1])                 # 0 = background
 gray = cv2.cvtColor(rgb, cv2.COLOR_RGB2GRAY)
 
 # 2. local contrast, then smooth texture while keeping edges
-clahe = cv2.createCLAHE(clipLimit=2.5, tileGridSize=(8, 8))
+clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(6, 6))
 smooth = clahe.apply(gray)
-for _ in range(2):
-    smooth = cv2.bilateralFilter(smooth, 7, 30, 9)
+smooth = cv2.bilateralFilter(smooth, 5, 24, 7)
 
 # 3. tone stretch over the subject only. hi stays near the brightest
 #    pixels so skin remains a midtone instead of clipping to white.
