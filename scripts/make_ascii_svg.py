@@ -1,11 +1,11 @@
 """
-Convert a portrait photo into a muted true-color ASCII-art SVG that "types"
-itself in like a terminal, then holds.
+Convert a portrait photo into a duotone ASCII-art SVG that "types" itself in
+like a terminal, then holds.
 
-Density still comes from the prepped luminance grid (prep_photo.py). Color is
-sampled from the original photo, then desaturated and pinned into a soft
-lightness band so the portrait stays readable on GitHub's dark theme — a
-quiet palette, not a neon rainbow.
+Glyph density comes from the prepped luminance grid (prep_photo.py). Fill color
+does not come from the photo — a low-chroma headshot only produces a gray wash.
+Brightness is mapped onto a designed palette instead: warm cream and amber for
+the face, teal for hair and shadows, deep slate for the sweater.
 
 GitHub renders SVGs embedded via <img> and runs their SMIL animations there (JS
 does not run). Each row is revealed with a left-to-right clip wipe plus a small
@@ -21,10 +21,9 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.join(HERE, "..")
-# luminance (density). color is read separately from the original photo.
+# luminance only. portrait fills are a designed duotone, not sampled RGB.
 SRC = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, "source-prepped.png")
 OUT = sys.argv[2] if len(sys.argv) > 2 else os.path.join(ROOT, "utkarsha-ascii.svg")
-COLOR_SRC = os.environ.get("COLOR_SRC", os.path.join(ROOT, "source-photo.png"))
 BIO = "Utkarsha Gupta · AI & Product @Pattern"
 
 # more columns = more detail (eyes need ~6+ chars across to read). the art
@@ -58,12 +57,23 @@ FRAME = "#30363d"
 TITLE_TEXT = "#7d8590"
 INK = "#c9d1d9"      # chrome / status text, not the portrait fill
 CURSOR = "#c9d1d9"
-# muted portrait ink: keep chroma low and lightness in a band that reads on #0d1117
-CHROMA_KEEP = 0.72
-SAT_CAP = 0.52
-LIGHT_MIN = 0.56
-LIGHT_MAX = 0.82
-QUANT = 8            # channel step; merges neighboring glyphs into color runs
+# Absolute luminance stops (0 = black, 1 = white), not a rank across pixels.
+# The sweater is a large field of near-black; ranking it would smear amber
+# through the clothing. These cuts keep that field slate/teal and the brighter
+# face cream and peach. No gray stop sits between the two hues.
+DUOTONE = (
+    (0.04, "#2a3540"),  # sweater body — visible slate on #0d1117
+    (0.08, "#3d6b6b"),  # deep teal, hair mass
+    (0.13, "#5b8a8a"),  # hair edges
+    (0.24, "#c9895a"),  # face — hue break, peach-amber
+    (0.38, "#d4a574"),
+    (0.52, "#e8b86d"),  # soft amber
+    (1.01, "#f0e6d2"),  # warm cream highlights
+)
+# Color follows a small blur of luminance so eyes and beard stay inside the
+# warm face instead of flipping the whole head to teal. Glyph shape is still
+# the sharp sample above.
+COLOR_BLUR = 3
 
 # ---- reveal timing (one-shot; a cursor rasters top -> bottom) -------------
 ROW_DUR = 5.8 / ROWS  # whole portrait prints in ~6s at any resolution
@@ -90,110 +100,26 @@ for y in range(ROWS):
         cell = src_arr[y0:y1, x0:x1]
         sampled[y, x] = 0.55 * cell.mean() + 0.45 * cell.min()
 
-# ---- 1b. muted color from the original photo, aligned to the prepped crop --
-def align_photo(photo_rgb, prep_h, prep_w):
-    """Paste source-photo onto the prepped canvas using prep_photo's crop."""
-    ph, pw = photo_rgb.shape[:2]
-    try:
-        from rembg import remove
-        photo_u8 = np.clip(photo_rgb, 0, 255).astype(np.uint8)
-        cut = remove(Image.fromarray(photo_u8).convert("RGBA"))
-        alpha = np.array(cut.split()[-1])
-        ys, xs = np.where(alpha > 20)
-        if len(xs) == 0:
-            raise RuntimeError("empty subject mask")
-        side = max(int(xs.max() - xs.min()), int(ys.max() - ys.min())) + 40
-        cx = int((xs.min() + xs.max()) // 2)
-        cy = int((ys.min() + ys.max()) // 2)
-        x0 = cx - side // 2
-        y0 = cy - side // 2
-        if side != prep_w or side != prep_h:
-            # prepped file was cropped differently; still paste into its frame
-            pass
-    except Exception as exc:
-        print(f"color align: centering photo ({exc})")
-        x0 = (pw - prep_w) // 2
-        y0 = (ph - prep_h) // 2
-    canvas = np.full((prep_h, prep_w, 3), 18, np.float32)
-    sx0, sy0 = max(x0, 0), max(y0, 0)
-    sx1, sy1 = min(x0 + prep_w, pw), min(y0 + prep_h, ph)
-    if sx1 > sx0 and sy1 > sy0:
-        canvas[sy0 - y0:sy1 - y0, sx0 - x0:sx1 - x0] = photo_rgb[sy0:sy1, sx0:sx1]
-    return canvas
+def duotone_for(lum):
+    """Designed palette from glyph luminance. lum is 0 (black) .. 1 (white)."""
+    for limit, color in DUOTONE:
+        if lum <= limit:
+            return color
+    return DUOTONE[-1][1]
 
-def cell_colors(rgb_canvas):
-    h, w = rgb_canvas.shape[:2]
-    grid = np.zeros((ROWS, COLS, 3), np.float32)
-    for y in range(ROWS):
-        y0 = int(y * h / ROWS)
-        y1 = max(y0 + 1, int((y + 1) * h / ROWS))
-        for x in range(COLS):
-            x0 = int(x * w / COLS)
-            x1 = max(x0 + 1, int((x + 1) * w / COLS))
-            grid[y, x] = rgb_canvas[y0:y1, x0:x1].mean(axis=(0, 1))
-    # soften speckle so neighboring glyphs share a color
-    padded = np.pad(grid, ((1, 1), (1, 1), (0, 0)), mode="edge")
-    acc = np.zeros_like(grid)
-    for dy in range(3):
-        for dx in range(3):
+def blur_ink(lum, radius):
+    """Mean of nearby ink. Background (spaces) contributes 0 so it does not tint the subject."""
+    base = np.where(lum < WHITE_FLOOR, lum, 0.0).astype(np.float32)
+    r = radius
+    padded = np.pad(base, r, mode="edge")
+    acc = np.zeros_like(base)
+    span = 2 * r + 1
+    for dy in range(span):
+        for dx in range(span):
             acc += padded[dy:dy + ROWS, dx:dx + COLS]
-    return acc / 9.0
+    return acc / (span * span)
 
-def hsv_of(rgb):
-    r, g, b = rgb[..., 0], rgb[..., 1], rgb[..., 2]
-    mx = np.max(rgb, axis=-1)
-    mn = np.min(rgb, axis=-1)
-    df = mx - mn
-    h = np.zeros_like(mx)
-    mask = df > 1e-6
-    rmask = mask & (mx == r)
-    gmask = mask & (mx == g) & ~rmask
-    bmask = mask & ~rmask & ~gmask
-    h[rmask] = ((g[rmask] - b[rmask]) / df[rmask]) % 6
-    h[gmask] = ((b[gmask] - r[gmask]) / df[gmask]) + 2
-    h[bmask] = ((r[bmask] - g[bmask]) / df[bmask]) + 4
-    h = (h / 6.0) % 1.0
-    s = np.zeros_like(mx)
-    s[mask] = df[mask] / np.maximum(mx[mask], 1e-6)
-    return h, s, mx
-
-def hsv_to_rgb(h, s, v):
-    h6 = (h % 1.0) * 6.0
-    i = np.floor(h6).astype(np.int32)
-    f = h6 - i
-    p = v * (1 - s)
-    q = v * (1 - f * s)
-    t = v * (1 - (1 - f) * s)
-    i = i % 6
-    out = np.zeros(h.shape + (3,), np.float32)
-    for idx, (a, b, c) in enumerate(((v, t, p), (q, v, p), (p, v, t), (p, q, v), (t, p, v), (v, p, q))):
-        m = i == idx
-        out[m, 0], out[m, 1], out[m, 2] = a[m], b[m], c[m]
-    return out
-
-def mute_palette(rgb_grid, ink_mask):
-    """Desaturate photo colors and pin lightness so glyphs read on a dark README."""
-    rgb = np.clip(rgb_grid / 255.0, 0, 1)
-    y = 0.2126 * rgb[..., 0] + 0.7152 * rgb[..., 1] + 0.0722 * rgb[..., 2]
-    # pull toward gray, then hard-cap saturation
-    rgb = y[..., None] + (rgb - y[..., None]) * CHROMA_KEEP
-    h, s, _v = hsv_of(np.clip(rgb, 0, 1))
-    s = np.minimum(s, SAT_CAP)
-    subject = y[ink_mask]
-    if subject.size:
-        lo, hi = np.percentile(subject, [8, 92])
-    else:
-        lo, hi = 0.0, 1.0
-    span = max(float(hi - lo), 1e-3)
-    t = np.clip((y - lo) / span, 0, 1)
-    v = LIGHT_MIN + (LIGHT_MAX - LIGHT_MIN) * np.power(t, 0.9)
-    muted = np.clip(hsv_to_rgb(h, s, v), 0, 1)
-    q = np.clip(np.round(muted * 255 / QUANT) * QUANT, 0, 255).astype(np.uint8)
-    return q
-
-photo = np.asarray(Image.open(COLOR_SRC).convert("RGB"), dtype=np.float32)
-aligned = align_photo(photo, sh, sw)
-color_grid = mute_palette(cell_colors(aligned), sampled / 255.0 < WHITE_FLOOR)
+color_lum = blur_ink(np.power(sampled / 255.0, GAMMA), COLOR_BLUR)
 
 STATIC = bool(os.environ.get("STATIC"))  # emit frozen state for previews
 
@@ -212,8 +138,7 @@ for y in range(ROWS):
         idx = int((1.0 - lum) * (len(RAMP) - 1) + 0.5)
         idx = max(0, min(len(RAMP) - 1, idx))
         chars.append(RAMP[idx])
-        r, g, b = (int(c) for c in color_grid[y, x])
-        hexes.append(f"#{r:02x}{g:02x}{b:02x}")
+        hexes.append(duotone_for(float(color_lum[y, x])))
     rows_txt.append("".join(chars))
     rows_hex.append(hexes)
 
