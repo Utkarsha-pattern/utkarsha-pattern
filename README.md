@@ -1,12 +1,12 @@
 <div align="center">
 
 <!-- animated contribution graph: real public data for Utkarsha-pattern,
-     boxes reveal once on load (regenerated daily by
+     boxes reveal once on load (regenerated every 2 hours by
      .github/workflows/update-profile-art.yml) -->
 
 <h3><code>utkarsha@github ~ $ ./contributions.sh</code></h3>
 
-<img src="./contrib-heatmap.svg" width="860" alt="Utkarsha Gupta's GitHub contribution graph, refreshed daily" />
+<img src="./contrib-heatmap.svg" width="860" alt="Utkarsha Gupta's GitHub contribution graph, refreshed every 2 hours" />
 
 <br>
 <br>
@@ -14,14 +14,14 @@
 <!-- ascii portrait (left) + streak/numbers card (right). both svgs are
      840x880 so equal widths give equal heights.
      portrait: python scripts/prep_photo.py source-photo.png && python scripts/make_ascii_svg.py
-     stats:    python scripts/render_stats_svg.py (same daily workflow) -->
+     stats:    python scripts/render_stats_svg.py (same every-2-hours workflow) -->
 
 <h3><code>utkarsha@github ~ $ whoami</code></h3>
 
 <table>
 <tr>
 <td valign="top"><img src="./utkarsha-ascii.svg?v=4" width="420" alt="Utkarsha Gupta, ASCII portrait" /></td>
-<td valign="top"><img src="./stats.svg" width="420" alt="Utkarsha Gupta's GitHub streak and contribution stats, refreshed daily" /></td>
+<td valign="top"><img src="./stats.svg" width="420" alt="Utkarsha Gupta's GitHub streak and contribution stats, refreshed every 2 hours" /></td>
 </tr>
 </table>
 
@@ -46,8 +46,8 @@ Portrait regeneration (after dropping a clearer headshot in as source-photo.png)
     python scripts/prep_photo.py source-photo.png
     python scripts/make_ascii_svg.py
 
-Daily art (contrib-heatmap.svg, stats.svg, data/contributions.json) is rewritten
-by .github/workflows/update-profile-art.yml. GitHub shows this README on the
+contrib-heatmap.svg, stats.svg, and data/contributions.json are rewritten
+every 2 hours by .github/workflows/update-profile-art.yml. GitHub shows this README on the
 profile page only while Utkarsha-pattern/utkarsha-pattern is public.
 -->
 
