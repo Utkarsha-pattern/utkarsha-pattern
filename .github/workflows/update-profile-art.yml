@@ -1,12 +1,17 @@
 name: Update profile art
 
 # Refreshes the contribution heatmap + stats card from Utkarsha-pattern's
-# public contribution calendar. Daily, on demand, and on pushes to main.
+# public contribution calendar. Every 2 hours, on demand, and on pushes to main.
 # The bot commit message includes [skip ci] so it does not retrigger itself.
+#
+# README images stay at ./contrib-heatmap.svg and ./stats.svg. GitHub renders
+# those as same-origin /raw/ paths (not camo.githubusercontent.com). raw.githubusercontent.com
+# answers with Cache-Control: max-age=300, so a new commit shows up within about
+# five minutes. A cache-busting query would not shorten that path.
 
 on:
   schedule:
-    - cron: "17 6 * * *"   # ~06:17 UTC every day
+    - cron: "17 */2 * * *"   # minute 17, every 2 hours UTC
   workflow_dispatch: {}
   push:
     branches: [main]
@@ -38,8 +43,57 @@ jobs:
       - name: Render streak / numbers card
         run: python scripts/render_stats_svg.py
 
+      # fetch_contributions.py stamps generated_at on every run. That timestamp
+      # is not shown in the SVGs. Put the previous bytes back when the calendar
+      # payload is unchanged so the commit step below has nothing to commit.
+      - name: Drop timestamp-only output
+        run: |
+          python3 << 'PY'
+          import json
+          import pathlib
+          import subprocess
+
+          JSON_PATH = "data/contributions.json"
+          ART = [JSON_PATH, "contrib-heatmap.svg", "stats.svg"]
+
+          def head_bytes(path):
+              result = subprocess.run(
+                  ["git", "show", f"HEAD:{path}"],
+                  capture_output=True,
+              )
+              if result.returncode != 0:
+                  return None
+              return result.stdout
+
+          def payload(raw):
+              data = json.loads(raw)
+              data.pop("generated_at", None)
+              return data
+
+          previous = head_bytes(JSON_PATH)
+          if previous is None:
+              print("no previous contributions.json; keeping generated files")
+              raise SystemExit(0)
+
+          current = pathlib.Path(JSON_PATH).read_bytes()
+          if payload(previous) != payload(current):
+              print("contribution data changed; keeping generated files")
+              raise SystemExit(0)
+
+          for path in ART:
+              prior = head_bytes(path)
+              if prior is None:
+                  continue
+              pathlib.Path(path).write_bytes(prior)
+          print("contribution data unchanged; restored previous generated files")
+          PY
+          git status --porcelain -- data/contributions.json contrib-heatmap.svg stats.svg
+
       - name: Commit updated art
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: "chore: refresh contribution graph [skip ci]"
           file_pattern: "data/contributions.json contrib-heatmap.svg stats.svg"
+          # Default. Stated here so a clean tree (including a timestamp-only
+          # refresh restored above) never becomes an empty commit.
+          skip_dirty_check: false
